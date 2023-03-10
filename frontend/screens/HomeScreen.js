@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { auth } from "../../firebase";
+import 'firebase/compat/auth';
 import { useNavigation } from "@react-navigation/native";
 
 const HomeScreen = () => {

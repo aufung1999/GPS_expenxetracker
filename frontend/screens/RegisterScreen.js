@@ -7,44 +7,50 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import 'firebase/compat/auth';
 import { useNavigation } from "@react-navigation/native";
 
-const LoginScreen = () => {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+const RegisterScreen = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    const navigation = useNavigation()
+  const [response, setResponse] = useState("");
 
-    useEffect(() => {
-      const unsubscribe = auth.onAuthStateChanged(user => {
-        if (user) {
-          navigation.replace("Home")
-        }
-      })
+  const navigation = useNavigation();
 
-      return unsubscribe
-    }, [])
+  //   useEffect(() => {
+  //     const unsubscribe = auth.onAuthStateChanged(user => {
+  //       if (user) {
+  //         navigation.replace("Home")
+  //       }
+  //     })
 
-    const handleSignUp = () => {
-        auth
-          .createUserWithEmailAndPassword(email, password)
-          .then(userCredentials => {
-            const user = userCredentials.user;
-            console.log('Registered with:', user.email);
-          })
-          .catch(error => alert(error.message))
-      }
+  //     return unsubscribe
+  //   }, [])
 
-    const handleLogin = () => {
-        auth
-          .signInUserWithEmailAndPassword(email, password)
-          .then(userCredentials => {
-            const user = userCredentials.user;
-            console.log('Registered with:', user.email);
-          })
-          .catch(error => alert(error.message))
-      }
+  async function registerUser(event) {
+    event.preventDefault();
+
+    const response = await fetch("http://192.168.2.16:8000/users/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.status === "ok") {
+      console.log("************************ok******************");
+      navigation.replace("Home")
+    } else {
+      console.log("data: " + data);
+      setResponse(data);
+    }
+  }
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -52,35 +58,36 @@ const LoginScreen = () => {
         <TextInput
           placeholder="Email"
           value={email}
-          onChangeText={text => setEmail(text)}
+          onChangeText={(text) => setEmail(text)}
           style={styles.input}
         />
 
         <TextInput
           placeholder="Password"
-          value= {password}
-          onChangeText={text => setPassword(text)}
+          value={password}
+          onChangeText={(text) => setPassword(text)}
           style={styles.input}
           secureTextEntry
         />
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={handleLogin} style={styles.button}>
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
         <TouchableOpacity
-          onPress={handleSignUp}
+          onPress={registerUser}
           style={[styles.button, styles.buttonOutline]}
         >
           <Text style={styles.buttonOutlineText}>Register</Text>
         </TouchableOpacity>
       </View>
+
+      <View>
+        <Text>{response}</Text>
+      </View>
     </KeyboardAvoidingView>
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;
 
 const styles = StyleSheet.create({
   container: {
