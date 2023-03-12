@@ -1,39 +1,22 @@
 const router = require("express").Router();
-let User = require("../models/user.model");
+let User = require("../models/user");
 
-// router.route('/').get((req, res) => {
-//   User.find()
-//     .then(users => res.json(users))
-//     .catch(err => res.status(400).json('Error: ' + err));
-// });
+const {
+  createUser,
+  userSignIn,
+  signOut,
+} = require('../controllers/user');
 
-router.route("/register").post(async (req, res) => {
-  console.log(req.body);
-  // const newPassword = await bcrypt.hash(req.body.password, 10); // FOR ENCRYption purpose
-  try {
-    const newUser = new User({
-      email: req.body.email,
-      password: req.body.password,
-    });
+const { isAuth } = require('../middlewares/auth');
 
-    newUser
-      .save()
-      .then(() => res.json("User added!"))
-      .catch((err) => res.status(400).json("Error: " + err));
-  } catch (err) {
-    res.json({ status: "error", error: "Duplicate email" });
-  }
-});
+const {
+  validateUserSignUp,
+  userValidation,
+  validateUserSignIn,
+} = require('../middlewares/validation/user');
 
-router.route("/add").post((req, res) => {
-  const username = req.body.username;
-
-  const newUser = new User({ username });
-
-  newUser
-    .save()
-    .then(() => res.json("User added!"))
-    .catch((err) => res.status(400).json("Error: " + err));
-});
+router.post('/register', validateUserSignUp, userValidation, createUser);
+router.post('/sign-in', validateUserSignIn, userValidation, userSignIn);
+router.post('/sign-out', isAuth, signOut);
 
 module.exports = router;
