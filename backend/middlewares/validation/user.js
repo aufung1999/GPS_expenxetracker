@@ -24,7 +24,7 @@ exports.validateUserSignUp = [
     .isEmpty()
     .custom((value, { req }) => {
       if (value !== req.body.password) {
-        throw new Error('Both password must be same!');
+        throw new Error('Both password must be same!'); 
       }
       return true;
     }),
