@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { StackActions } from '@react-navigation/native';
 
-import client from '../api/client';
+import client from '../../api/client';
 
 const ImageUpload = props => {
   const [profileImage, setProfileImage] = useState('');

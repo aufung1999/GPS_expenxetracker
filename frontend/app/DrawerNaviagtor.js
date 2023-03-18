@@ -6,8 +6,8 @@ import {
   DrawerItemList,
 } from '@react-navigation/drawer';
 
-import Home from './components/Home';
-import Tasks from './components/Tasks';
+import Home from './components/login/Home';
+import Tasks from './components/login/Tasks';
 import { useLogin } from './context/LoginProvider';
 
 const Drawer = createDrawerNavigator();

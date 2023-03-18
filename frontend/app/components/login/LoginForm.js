@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, TextInput } from 'react-native';
-import client from '../api/client';
-import { useLogin } from '../context/LoginProvider';
-import { isValidEmail, isValidObjField, updateError } from '../utils/methods';
+import client from '../../api/client';
+import { useLogin } from '../../context/LoginProvider';
+import { isValidEmail, isValidObjField, updateError } from '../../utils/methods';
 import FormContainer from './FormContainer';
 import FormInput from './FormInput';
 import FormSubmitButton from './FormSubmitButton';
