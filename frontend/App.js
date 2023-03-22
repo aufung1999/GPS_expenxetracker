@@ -3,7 +3,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Provider } from "react-redux";
 
 import { createStore, applyMiddleware, compose } from "redux";
-import { composeWithDevTools } from "remote-redux-devtools";
 import thunk from "redux-thunk";
 import reducers from "./Redux/reducers";
 
@@ -13,7 +12,7 @@ if(__DEV__) {
   import('./ReactotronConfig').then(() => console.log('Reactotron Configured'))
 }
 
-const store = createStore(reducers, compose(applyMiddleware(thunk), Reactotron.createEnhancer()) )
+export const store = createStore(reducers, compose(applyMiddleware(thunk), Reactotron.createEnhancer()) )
 
 import MainNavigator from "./app/MainNavigator";
 import LoginProvider from "./app/context/LoginProvider";

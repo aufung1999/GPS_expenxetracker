@@ -10,8 +10,8 @@ import FormSubmitButton from './FormSubmitButton';
 const LoginForm = () => {
   const { setIsLoggedIn, setProfile } = useLogin();
   const [userInfo, setUserInfo] = useState({
-    email: '',
-    password: '',
+    email: 'admin@admin.com',  // NEED TO remove
+    password: 'admin1234',              // NEED TO remove
   });
 
   const [error, setError] = useState('');
@@ -60,14 +60,14 @@ const LoginForm = () => {
         </Text>
       ) : null}
       <FormInput
-        value={email}
+        value={email}    // DYNAMIC:{email}, static:"admin@admin@gmail.com" line 13, 14
         onChangeText={value => handleOnChangeText(value, 'email')}
         label='Email'
         placeholder='example@email.com'
         autoCapitalize='none'
       />
       <FormInput
-        value={password}
+        value={password} // DYNAMIC:{password}, static:"admin1234" line 13, 14
         onChangeText={value => handleOnChangeText(value, 'password')}
         label='Password'
         placeholder='********'
