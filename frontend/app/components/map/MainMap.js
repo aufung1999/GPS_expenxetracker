@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { StyleSheet, View, Text } from "react-native";
 import { Dimensions } from "react-native";
@@ -7,9 +7,19 @@ import Constants from "expo-constants";
 import PermissionsButton from "./PermissionsButton";
 import { useDispatch, useSelector } from "react-redux";
 
+import GeoFencing from "react-native-geo-fencing";
+
+import { GOOGLE_API } from "@env";
+import { locationsAction } from "../../../Redux/actions";
+import GeoFencingDetection from "./GeoFencingDetection";
+// import {API_URL, API_TOKEN} from 'react-native-dotenv'
+
 export default function MainMap() {
   const mapRef = useRef();
   const trackingPosition = useSelector((state) => state.trackingPosition);
+  const dispatch = useDispatch();
+
+  const [coordinates, setCoordinates] = useState(null);
 
   const { width, height } = Dimensions.get("window");
 
@@ -17,21 +27,39 @@ export default function MainMap() {
   const LATITUDE_DELTA = 0.02;
   const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-  // const INITIAL_POSITION = {
-  //   latitude: trackingPosition.lat,
-  //   longitude: trackingPosition.long,
-  //   latitudeDelta: LATITUDE_DELTA,
-  //   longitudeDelta: LONGITUDE_DELTA,
-  // };
-
   useEffect(() => {
-    if (trackingPosition != null) {
+    if (trackingPosition) {
       mapRef.current.animateToRegion({
         latitude: trackingPosition.lat,
         longitude: trackingPosition.long,
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       });
+
+      fetch(
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${trackingPosition.lat},${trackingPosition.long}&radius=30&key=${GOOGLE_API}`
+      )
+        .then((res) => res.json())
+        .then((data) =>
+          data["results"].map((each) => {
+            if (each.price_level) {
+              console.log(each.name + ":");
+              console.log(each.place_id);
+              console.log(each["geometry"].viewport);
+              console.log(
+                "++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+              );
+              setCoordinates(each["geometry"].viewport);
+
+              dispatch_obj = {
+                place_id: each.place_id,
+                viewport: each["geometry"].viewport,
+              };
+
+              dispatch(locationsAction(dispatch_obj));
+            }
+          })
+        );
     }
   }, [trackingPosition]);
 
@@ -54,7 +82,7 @@ export default function MainMap() {
               onPlaceSelected(details);
             }}
             query={{
-              key: "AIzaSyCAzWTNbMapvSe80tFJHGw2N1PvVivEuLQ",
+              key: `${GOOGLE_API}`,
               language: "en",
             }}
           />
@@ -63,6 +91,10 @@ export default function MainMap() {
 
       <View style={styles.permissionbtn}>
         <PermissionsButton />
+      </View>
+
+      <View>
+        <GeoFencingDetection/>
       </View>
     </View>
   );

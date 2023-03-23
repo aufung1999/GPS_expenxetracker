@@ -4,3 +4,12 @@ export const trackingPositionAction = (data) => {
       payload: data
     };
   };
+
+
+export const locationsAction = (data) => {
+    return {
+      type: "store_location",
+      payload: data
+    };
+  };
+

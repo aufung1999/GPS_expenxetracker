@@ -41,7 +41,7 @@ export default function PermissionsButton() {
   const [time, setTime] = useState(Date.now());
 
   useEffect(() => {
-    const interval = setInterval(() => setTime(Date.now()), 10000);
+    const interval = setInterval(() => setTime(Date.now()), 100000);
     return () => {
       clearInterval(interval);
     };
@@ -50,12 +50,12 @@ export default function PermissionsButton() {
   useEffect(() => {
     AsyncStorage.getItem("position").then((position) => {
       if (position) {
-        console.log(position);
+        // console.log(position);
         var array = JSON.parse("[" + position + "]");
-        console.log('array: ' + array[0])
+        // console.log('array: ' + array[0])
         let obj = { lat: array[0], long: array[1] };
 
-        console.log(obj)
+        // console.log(obj)
 
         dispatch( trackingPositionAction(obj) )
       }
