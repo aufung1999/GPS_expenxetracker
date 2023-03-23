@@ -10,13 +10,14 @@ import { useDispatch, useSelector } from "react-redux";
 import GeoFencing from "react-native-geo-fencing";
 
 import { GOOGLE_API } from "@env";
-import { locationsAction } from "../../../Redux/actions";
+import { locationsAction_add, locationsAction_remove } from "../../../Redux/actions";
 import GeoFencingDetection from "./GeoFencingDetection";
 // import {API_URL, API_TOKEN} from 'react-native-dotenv'
 
 export default function MainMap() {
   const mapRef = useRef();
   const trackingPosition = useSelector((state) => state.trackingPosition);
+  const locations = useSelector((state) => state.locations);
   const dispatch = useDispatch();
 
   const [coordinates, setCoordinates] = useState(null);
@@ -43,6 +44,9 @@ export default function MainMap() {
         .then((data) =>
           data["results"].map((each) => {
             if (each.price_level) {
+              console.log(
+                "++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+              );
               console.log(each.name + ":");
               console.log(each.place_id);
               console.log(each["geometry"].viewport);
@@ -54,9 +58,11 @@ export default function MainMap() {
               dispatch_obj = {
                 place_id: each.place_id,
                 viewport: each["geometry"].viewport,
+                name: each.name,
               };
 
-              dispatch(locationsAction(dispatch_obj));
+              dispatch( locationsAction_remove(dispatch_obj))
+              dispatch(locationsAction_add(dispatch_obj));
             }
           })
         );
@@ -93,8 +99,17 @@ export default function MainMap() {
         <PermissionsButton />
       </View>
 
-      <View>
-        <GeoFencingDetection/>
+      <View style={styles.geofeceningdetection}>
+        {locations &&
+          locations.map((each) => (
+            <View style={styles.inner} key={each.place_id}>
+              <GeoFencingDetection  //deconstruct from locations reducer
+                southwest={each["viewport"].southwest}
+                northeast={each["viewport"].northeast}
+                name={each.name}
+              />
+            </View>
+          ))}
       </View>
     </View>
   );
@@ -131,6 +146,20 @@ const styles = StyleSheet.create({
     elevation: 4,
     padding: 8,
     top: Constants.statusBarHeight + 100,
+  },
+  geofeceningdetection: {
+    backgroundColor: "white",
+    position: "absolute",
+    width: "90%",
+    elevation: 4,
+    padding: 8,
+    top: Constants.statusBarHeight + 150,
+  },
+  inner: {
+    flex: 1,
+    backgroundColor: "#D3D3D3",
+    alignItems: "center",
+    justifyContent: "center",
   },
   input: {
     borderColor: "#888",

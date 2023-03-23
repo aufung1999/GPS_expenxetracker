@@ -29,14 +29,15 @@ const locationsReducer = (state = [], action) => {
     case "store_location":
       if (state.length == 0) {
         return [...state, action.payload];
+      } else {
+        const existInState = state.some(
+          (each) => each.place_id == action.payload.place_id
+        );
+        return existInState ? state : [...state, action.payload];
       }
-      state.map((each) => {
-        if (each.place_id == action.payload.place_id) {
-          return state;
-        } else if (each.place_id != action.payload.place_id) {
-          return [...state, action.payload];
-        }
-      });
+
+    case "remove_location":
+      return state.filter((each) => each.place_id == action.payload.place_id);
     default:
       return state;
   }

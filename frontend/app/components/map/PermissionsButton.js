@@ -41,7 +41,7 @@ export default function PermissionsButton() {
   const [time, setTime] = useState(Date.now());
 
   useEffect(() => {
-    const interval = setInterval(() => setTime(Date.now()), 100000);
+    const interval = setInterval(() => setTime(Date.now()), 10000);
     return () => {
       clearInterval(interval);
     };
