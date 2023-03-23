@@ -13,7 +13,7 @@ const isEditLangBtnReducer = (state = true, action) => {
 };
 //######################################################################################################
 
-const trackingPositionReducer = (state = null, action) => {
+const currentPositionReducer = (state = null, action) => {
   switch (action.type) {
     case "tracking":
       return action.payload;
@@ -38,6 +38,18 @@ const locationsReducer = (state = [], action) => {
 
     case "remove_location":
       return state.filter((each) => each.place_id == action.payload.place_id);
+    case "count_time":
+      const isFind = state.find(
+        (each) => each.place_id == action.payload.place_id
+      );
+      // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+      // console.log(isFind.count);
+      // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+      isFind.count = isFind.count + 1;
+      return state;
+
+    case "passed_locations":
+      return [];
     default:
       return state;
   }
@@ -48,7 +60,7 @@ const locationsReducer = (state = [], action) => {
 const reducers = combineReducers({
   isEditLangBtn: isEditLangBtnReducer,
 
-  trackingPosition: trackingPositionReducer,
+  currentPosition: currentPositionReducer,
 
   locations: locationsReducer,
 });

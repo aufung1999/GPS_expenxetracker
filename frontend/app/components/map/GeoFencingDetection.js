@@ -1,23 +1,38 @@
 import { View, Text, StyleSheet } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import Constants from "expo-constants";
+import { useDispatch, useSelector } from "react-redux";
 
-export default function GeoFencingDetection({ southwest, northeast, name }) {
-  console.log(southwest);
-  console.log(northeast);
+import GeoFencing from "react-native-geo-fencing";
+import { GOOGLE_API } from "@env";
+import { locationsAction_remove } from "../../../Redux/actions";
 
-  const polygon = [
-    { lat: 3.1336599385978805, lng: 101.31866455078125 },
-    { lat: 3.3091633559540123, lng: 101.66198730468757 },
-    { lat: 3.091150714460597, lng: 101.92977905273438 },
-    { lat: 2.7222113428196213, lng: 101.74850463867188 },
-    { lat: 2.7153526167685347, lng: 101.47933959960938 },
-    { lat: 3.1336599385978805, lng: 101.31866455078125 }, // last point has to be same as first point
-  ];
+export default function GeoFencingDetection({
+  southwest,
+  northeast,
+  place_id,
+  name,
+  currentPosition,
+  count,
+}) {
+
+  // const polygon = [
+  //   { lat: northeast.lat, lng: northeast.lng },
+  //   { lat: northeast.lat, lng: southwest.lng },
+  //   { lat: southwest.lat, lng: southwest.lng },
+  //   { lat: southwest.lat, lng: northeast.lng },
+  //   { lat: northeast.lat, lng: northeast.lng }, // last point has to be same as first point
+  // ];
+
+  // GeoFencing.containsLocation(currentPosition, polygon)
+  //   .then(() => console.log("++++++point is within polygon+++++++++"))
+  //   .catch(() =>
+  //     console.log("---------point is NOT within polygon-------------")
+  //   );
 
   return (
     <View>
-      <Text>{name}</Text>
+      <Text>{name} {count}</Text>
     </View>
   );
 }

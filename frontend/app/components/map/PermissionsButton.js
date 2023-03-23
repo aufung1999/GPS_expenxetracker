@@ -5,7 +5,7 @@ import * as Location from "expo-location";
 import { useDispatch } from "react-redux";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { trackingPositionAction } from "../../../Redux/actions";
+import { currentPositionAction } from "../../../Redux/actions";
 
 const LOCATION_TRACKING = "location-tracking";
 
@@ -53,11 +53,11 @@ export default function PermissionsButton() {
         // console.log(position);
         var array = JSON.parse("[" + position + "]");
         // console.log('array: ' + array[0])
-        let obj = { lat: array[0], long: array[1] };
+        let obj = { lat: array[0], lng: array[1] };
 
         // console.log(obj)
 
-        dispatch( trackingPositionAction(obj) )
+        dispatch( currentPositionAction(obj) )
       }
     });
   }, [time]);
@@ -86,13 +86,13 @@ TaskManager.defineTask("location-tracking", async ({ data, error }) => {
   if (data) {
     const { locations } = data;
     let lat = locations[0].coords.latitude;
-    let long = locations[0].coords.longitude;
+    let lng = locations[0].coords.longitude;
 
     await AsyncStorage.setItem(
       "position",
-      `${lat},${long}`
+      `${lat},${lng}`
     );
 
-    console.log(`${new Date(Date.now()).toLocaleString()}: ${lat},${long}`);
+    console.log(`${new Date(Date.now()).toLocaleString()}: ${lat},${lng}`);
   }
 });
