@@ -15,9 +15,13 @@ import {
   locationsAction_countTime,
 } from "../../../Redux/actions";
 import GeoFencingDetection from "./GeoFencingDetection";
+import uploadServer from "../upload/uploadServer";
+import { useLogin } from "../../context/LoginProvider";
 // import {API_URL, API_TOKEN} from 'react-native-dotenv'
 
 export default function MainMap() {
+  const { setIsLoggedIn, profile } = useLogin()
+
   const mapRef = useRef();
   const currentPosition = useSelector((state) => state.currentPosition);
   const locations = useSelector((state) => state.locations);
@@ -38,6 +42,10 @@ export default function MainMap() {
         longitudeDelta: LONGITUDE_DELTA,
       });
 
+      //To see if the count reaches 6 units -- 60 seconds
+      locations.map((each) => (each.count > 6 ? uploadServer(each, profile.email) : null));
+
+      //FETCH
       fetch(
         `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${currentPosition.lat},${currentPosition.lng}&radius=30&key=${GOOGLE_API}`
       )
@@ -49,18 +57,14 @@ export default function MainMap() {
           // console.log(filtered);
           if (filtered.length != 0) {
             filtered.map((each) => {
-              console.log(
-                "++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-              );
+              console.log("++++++++++++++++++++++++++++++++++");
               console.log(each.name + ":");
               console.log(each.place_id);
-              // console.log(each["geometry"].viewport);
-              console.log(
-                "++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-              );
+              console.log("++++++++++++++++++++++++++");
 
               dispatch_obj = {
                 place_id: each.place_id,
+                location: each["geometry"].location,
                 viewport: each["geometry"].viewport,
                 name: each.name,
                 count: 0,
@@ -71,7 +75,9 @@ export default function MainMap() {
               );
               console.log("someRes: " + someRes);
               someRes
-                ? dispatch(locationsAction_countTime({place_id: each.place_id}))
+                ? dispatch(
+                    locationsAction_countTime({ place_id: each.place_id })
+                  )
                 : dispatch(locationsAction_remove(dispatch_obj));
 
               dispatch(locationsAction_add(dispatch_obj));

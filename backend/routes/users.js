@@ -1,6 +1,7 @@
 const express = require('express');
 
 const router = express.Router();
+
 const {
   createUser,
   userSignIn,
@@ -12,7 +13,7 @@ const {
   validateUserSignUp,
   userValidation,
   validateUserSignIn,
-} = require('../middlewares/validation/user'); 
+} = require('../middlewares/validation/user');
 
 const multer = require('multer');
 
