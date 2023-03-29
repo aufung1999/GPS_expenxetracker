@@ -17,6 +17,8 @@ const userSchema = new mongoose.Schema({
   },
   avatar: String,
   tokens: [{ type: Object }],
+  locations: [{type: mongoose.Schema.Types.ObjectId, ref: 'Location'  }]
+
 });
 
 userSchema.pre('save', function (next) {

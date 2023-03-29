@@ -1,17 +1,17 @@
 const mongoose = require('mongoose');
 
 const locationSchema = new mongoose.Schema({
+    user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'  },
     place_id: {
       type: String,
       required: true,
     },
     location: {
-      type: String,
+      type: Object,
       required: true,
-      unique: true,
     },
     viewport: {
-      type: String,
+      type: Object,
       required: true,
     },
     name: {
@@ -23,3 +23,5 @@ const locationSchema = new mongoose.Schema({
       required: true,
     },
   });
+
+  module.exports = mongoose.model('Location', locationSchema);

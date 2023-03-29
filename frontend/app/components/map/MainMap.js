@@ -43,7 +43,7 @@ export default function MainMap() {
       });
 
       //To see if the count reaches 6 units -- 60 seconds
-      locations.map((each) => (each.count > 6 ? uploadServer(each, profile.email) : null));
+      locations.map((each) => (each.count > 1 ? uploadServer(each, profile.email) : null));
 
       //FETCH
       fetch(
