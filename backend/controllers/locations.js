@@ -2,16 +2,20 @@ const Location = require("../models/location");
 const User = require("../models/user");
 
 exports.uploadLocation = async (req, res) => {
-  console.log(req.body.location);
+  //   console.log(req.body.location);
   // res.json({ success: true });
-  const { place_id, location, viewport, name, count } = req.body.location;  // deconstruct from REQUEST
+  const { place_id, location, viewport, name, count } = req.body.location; // deconstruct from REQUEST
 
   const target_User = await User.findOne({ email: req.body.email });
 
-  const target_Location = await Location.findOne({ user: target_User, place_id: place_id});
+  const target_Location = await Location.findOne({
+    user: target_User,
+    place_id: place_id,
+  });
 
-  console.log("target_Location: " + target_Location);
+  //   console.log("target_Location: " + target_Location);
 
+  // if the locations NEVER exist in MONGODB
   if (target_Location == null) {
     const save_location = await Location({
       user: target_User,
@@ -20,6 +24,7 @@ exports.uploadLocation = async (req, res) => {
       viewport: viewport,
       name: name,
       count: count,
+      date: new Date(Date.now()).toLocaleString().split(", ")[0],
     });
 
     await User.findOneAndUpdate(
@@ -27,11 +32,23 @@ exports.uploadLocation = async (req, res) => {
       { $push: { locations: save_location } }
     );
 
-    console.log(target_User);
-
     await save_location.save();
     res.json({ success: true, save_location });
-  } else if (target_Location != null) {
+  }
+  // if the locations exist in MONGODB
+  else if (target_Location != null) {
+    console.log("target_Location.count: " + target_Location.count);
+    if (target_Location.count > count) {
+      await Location.updateOne(
+        { _id: target_Location },
+        {
+          $set: {
+            count: target_Location.count + 1,
+          },
+        }
+      );
+    }
+  } else if (target_Location.count < count) {
     await Location.updateOne(
       { _id: target_Location },
       {

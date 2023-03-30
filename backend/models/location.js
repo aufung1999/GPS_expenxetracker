@@ -19,9 +19,14 @@ const locationSchema = new mongoose.Schema({
     required: true,
   },
   count: {
+    type: Number,
+    required: true,
+  },
+  date:{
     type: String,
     required: true,
   },
+
 });
 
 module.exports = mongoose.model("Location", locationSchema);

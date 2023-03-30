@@ -20,7 +20,7 @@ import { useLogin } from "../../context/LoginProvider";
 // import {API_URL, API_TOKEN} from 'react-native-dotenv'
 
 export default function MainMap() {
-  const { setIsLoggedIn, profile } = useLogin()
+  const { setIsLoggedIn, profile } = useLogin();
 
   const mapRef = useRef();
   const currentPosition = useSelector((state) => state.currentPosition);
@@ -43,7 +43,9 @@ export default function MainMap() {
       });
 
       //To see if the count reaches 6 units -- 60 seconds
-      locations.map((each) => (each.count > 1 ? uploadServer(each, profile.email) : null));
+      locations.map((each) =>
+        each.count > 1 ? uploadServer(each, profile.email) : null
+      );
 
       //FETCH
       fetch(
@@ -78,8 +80,8 @@ export default function MainMap() {
                 ? dispatch(
                     locationsAction_countTime({ place_id: each.place_id })
                   )
-                : null
-                // dispatch(locationsAction_remove(dispatch_obj));
+                : null;
+              // dispatch(locationsAction_remove(dispatch_obj));
 
               dispatch(locationsAction_add(dispatch_obj));
             });
@@ -170,7 +172,7 @@ const styles = StyleSheet.create({
     width: "90%",
     elevation: 4,
     padding: 8,
-    top: Constants.statusBarHeight ,
+    top: Constants.statusBarHeight,
   },
   geofeceningdetection: {
     backgroundColor: "white",
