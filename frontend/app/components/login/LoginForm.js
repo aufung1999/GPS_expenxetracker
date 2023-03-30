@@ -10,8 +10,8 @@ import FormSubmitButton from './FormSubmitButton';
 const LoginForm = () => {
   const { setIsLoggedIn, setProfile } = useLogin();
   const [userInfo, setUserInfo] = useState({
-    email: 'admin@admin.com',  // NEED TO remove
-    password: 'admin1234',              // NEED TO remove
+    email: 'abc@gmail.com',  // NEED TO remove
+    password: 'abc12345678',              // NEED TO remove
   });
 
   const [error, setError] = useState('');

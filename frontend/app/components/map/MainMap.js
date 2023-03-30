@@ -78,7 +78,8 @@ export default function MainMap() {
                 ? dispatch(
                     locationsAction_countTime({ place_id: each.place_id })
                   )
-                : dispatch(locationsAction_remove(dispatch_obj));
+                : null
+                // dispatch(locationsAction_remove(dispatch_obj));
 
               dispatch(locationsAction_add(dispatch_obj));
             });
@@ -169,7 +170,7 @@ const styles = StyleSheet.create({
     width: "90%",
     elevation: 4,
     padding: 8,
-    top: Constants.statusBarHeight + 100,
+    top: Constants.statusBarHeight ,
   },
   geofeceningdetection: {
     backgroundColor: "white",
@@ -177,7 +178,7 @@ const styles = StyleSheet.create({
     width: "90%",
     elevation: 4,
     padding: 8,
-    top: Constants.statusBarHeight + 150,
+    top: Constants.statusBarHeight + 50,
   },
   inner: {
     flex: 1,
