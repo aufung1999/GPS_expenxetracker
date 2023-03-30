@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import MainMap from "../map/MainMap";
 
 const Home = () => {
-  const dispatch = useDispatch();
 
   return (
     <View style={styles.container}>

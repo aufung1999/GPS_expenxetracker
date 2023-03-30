@@ -7,7 +7,7 @@ import {
 } from '@react-navigation/drawer';
 
 import Home from './components/Pages/Home';
-import Tasks from './components/Pages/Tasks';
+import Locations from './components/Pages/Locations';
 import { useLogin } from './context/LoginProvider';
 
 const Drawer = createDrawerNavigator();
@@ -74,7 +74,7 @@ const DrawerNavigator = () => {
       drawerContent={props => <CustomDrawer {...props} />}
     >
       <Drawer.Screen component={Home} name='Home' />
-      <Drawer.Screen component={Tasks} name='Tasks' />
+      <Drawer.Screen component={Locations} name='Locations' />
       {/* <Drawer.Screen component={BackgroundMap} name='Background' /> */}
     </Drawer.Navigator>
   );

@@ -59,3 +59,22 @@ exports.uploadLocation = async (req, res) => {
     );
   }
 };
+
+exports.getLocations = async (req, res) => {
+  console.log("***getLocations:***", req.body.email);
+
+  const target_User = await User.findOne({ email: req.body.email });
+
+  console.log("target_User: " + target_User);
+
+  await Location.find({ user: target_User })
+    // .populate("Location")
+    .then((res) => {
+      //if succeded do this block of code
+      res.json({ success: true, location: res });
+    })
+    .catch((err) => {
+      //catch error
+      res.json({ success: false, message: "FAILED to rerieve locations" });
+    });
+};
