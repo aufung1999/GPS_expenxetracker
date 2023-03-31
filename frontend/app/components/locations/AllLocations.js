@@ -1,20 +1,21 @@
-import { StyleSheet, View, Text } from "react-native";
-import React from "react";
-import client from "../../api/client";
+import { StyleSheet, View, Text, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
 
-export default async function AllLocations({ email }) {
-  const res = await client.post("/locations", { email: email });
+import ChangeDate from "./ChangeDate";
+import DisplayLocations from "./DisplayLocations";
+import RecordExpense from "./RecordExpense";
 
-  res?.map(each => {console.log(each.data)})
-
-//   console.log(res.data);
-
+export default function AllLocations({ email }) {
   return (
     <View style={styles.container}>
-      <Text>allLocations</Text>
+      <Text>All Locations</Text>
+      <ChangeDate />
+      <RecordExpense/>
+      <DisplayLocations email={email} />
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

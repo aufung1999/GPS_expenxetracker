@@ -65,16 +65,23 @@ exports.getLocations = async (req, res) => {
 
   const target_User = await User.findOne({ email: req.body.email });
 
-  console.log("target_User: " + target_User);
+  //   console.log("target_User: " + target_User);
 
-  await Location.find({ user: target_User })
-    // .populate("Location")
-    .then((res) => {
-      //if succeded do this block of code
-      res.json({ success: true, location: res });
-    })
-    .catch((err) => {
-      //catch error
-      res.json({ success: false, message: "FAILED to rerieve locations" });
-    });
+  const target_Locations = await Location.find({ user: target_User });
+
+  console.log("target_Locations: " + target_Locations);
+  // .populate("Location")
+  // .then((res) => {
+  //   //if succeded do this block of code
+  //   res.json({ success: true, location: res });
+  // })
+  // .catch((err) => {
+  //   //catch error
+  //   res.json({ success: false, message: "FAILED to rerieve locations" });
+  // });
+  try {
+    res.json({ success: true, location: target_Locations });
+  } catch (error) {
+    res.json({ success: false, message: "FAILED to rerieve locations" });
+  }
 };
