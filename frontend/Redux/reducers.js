@@ -57,12 +57,37 @@ const locationsReducer = (state = [], action) => {
 
 //######################################################################################################
 
+const switchRecordReducer = (state = "expense NOT recorded", action) => {
+  switch (action.type) {
+    case "switch-Record":
+      return action.payload;
+    default:
+      return state;
+  }
+};
+//######################################################################################################
+
+const dateRecordReducer = (state = "TODAY", action) => {
+  switch (action.type) {
+    case "date-Record":
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+//######################################################################################################
+
 const reducers = combineReducers({
   isEditLangBtn: isEditLangBtnReducer,
 
   currentPosition: currentPositionReducer,
 
   locations: locationsReducer,
+
+  switchRecord: switchRecordReducer,
+
+  dateRecord: dateRecordReducer,
 });
 
 export default reducers;

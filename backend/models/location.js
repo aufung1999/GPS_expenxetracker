@@ -22,6 +22,9 @@ const locationSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  expense: {
+    type: String,
+  },
   date:{
     type: String,
     required: true,

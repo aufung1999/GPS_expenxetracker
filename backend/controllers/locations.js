@@ -13,8 +13,6 @@ exports.uploadLocation = async (req, res) => {
     place_id: place_id,
   });
 
-  //   console.log("target_Location: " + target_Location);
-
   // if the locations NEVER exist in MONGODB
   if (target_Location == null) {
     const save_location = await Location({
@@ -24,7 +22,7 @@ exports.uploadLocation = async (req, res) => {
       viewport: viewport,
       name: name,
       count: count,
-      date: new Date(Date.now()).toLocaleString().split(", ")[0],
+      date: new Date(Date.now()).toISOString().split("T")[0],
     });
 
     await User.findOneAndUpdate(
@@ -47,41 +45,124 @@ exports.uploadLocation = async (req, res) => {
           },
         }
       );
+    } else if (target_Location.count < count) {
+      await Location.updateOne(
+        { _id: target_Location },
+        {
+          $set: {
+            count: count,
+          },
+        }
+      );
     }
-  } else if (target_Location.count < count) {
-    await Location.updateOne(
-      { _id: target_Location },
-      {
-        $set: {
-          count: count,
-        },
-      }
-    );
+  }
+};
+
+exports.removeLocation = async (req, res) => {
+  const { email, _id } = req.body;
+
+  const target_User = await User.findOne({ email: email });
+
+  try {
+    await Location.deleteOne({
+      user: target_User,
+      _id: _id,
+    });
+    res.json({ success: true, message: "removed sucessfully" });
+  } catch (error) {
+    res.json({ success: false, message: "NOT removed" });
   }
 };
 
 exports.getLocations = async (req, res) => {
-  console.log("***getLocations:***", req.body.email);
+  console.log("***getLocations:***", req.body);
 
-  const target_User = await User.findOne({ email: req.body.email });
+  const { email, dateRecord, switchRecord } = req.body;
 
-  //   console.log("target_User: " + target_User);
+  const target_User = await User.findOne({ email: email });
 
-  const target_Locations = await Location.find({ user: target_User });
-
-  console.log("target_Locations: " + target_Locations);
-  // .populate("Location")
-  // .then((res) => {
-  //   //if succeded do this block of code
-  //   res.json({ success: true, location: res });
-  // })
-  // .catch((err) => {
-  //   //catch error
-  //   res.json({ success: false, message: "FAILED to rerieve locations" });
-  // });
   try {
-    res.json({ success: true, location: target_Locations });
+    if (switchRecord === "expense NOT recorded") {
+      const target_Locations = await Location.find({ user: target_User });
+      return res.json({ success: true, location: target_Locations });
+    }
+
+    if (switchRecord === "expense recorded" && dateRecord === "TODAY") {
+      const today = new Date(Date.now()).toISOString().split("T")[0];
+      const target_Locations = await Location.find({
+        $and: [
+          {
+            user: target_User,
+          },
+          { date: { $regex: today } },
+        ],
+      });
+
+      console.log(target_Locations);
+      return res.json({ success: true, location: target_Locations });
+    }
+
+    if (switchRecord === "expense recorded" && dateRecord === "1 MONTH") {
+      const currentMonth = new Date(Date.now())
+        .toISOString()
+        .split("T")[0]
+        .substr(0, 7);
+      const target_Locations = await Location.find({
+        $and: [
+          {
+            user: target_User,
+          },
+          { date: { $regex: currentMonth } },
+        ],
+      });
+      return res.json({ success: true, location: target_Locations });
+    }
+
+    if (switchRecord === "expense recorded" && dateRecord === "1 YEAR") {
+      const currentYear = new Date(Date.now())
+        .toISOString()
+        .split("T")[0]
+        .substr(0, 4);
+      const target_Locations = await Location.find({
+        $and: [
+          {
+            user: target_User,
+          },
+          { date: { $regex: currentYear } },
+        ],
+      });
+      return res.json({ success: true, location: target_Locations });
+    }
   } catch (error) {
     res.json({ success: false, message: "FAILED to rerieve locations" });
+  }
+};
+
+exports.storeExpense = async (req, res) => {
+  console.log("***storeExpense:***", req.body);
+  console.log("***_id:***", req.body.numbers);
+
+  const { email, numbers } = req.body;
+
+  const target_User = await User.findOne({ email: email });
+
+  const target_Locations = target_User["locations"].filter(
+    (each) => each in numbers === true
+  );
+
+  try {
+    target_Locations.map(async (each) => {
+      console.log("each: " + each);
+      console.log("each: " + typeof numbers[each]);
+
+      await Location.updateOne(
+        { _id: each },
+        { $set: { expense: numbers[each] } }
+      );
+    });
+    res.json({ success: true, message: "Updated" });
+  } catch (error) {
+    // console.log('error: ' + error)
+    res.json({ success: false, message: "CANNOT Update" });
   }
 };

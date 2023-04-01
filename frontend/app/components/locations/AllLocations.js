@@ -1,17 +1,29 @@
 import { StyleSheet, View, Text, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 
-import ChangeDate from "./ChangeDate";
-import DisplayLocations from "./DisplayLocations";
+import DisplayLocations_NR from "./DisplayLocations_NR";
 import RecordExpense from "./RecordExpense";
+import { useSelector } from "react-redux";
+import DisplayLocations_R from "./DisplayLocations_R";
 
 export default function AllLocations({ email }) {
+  const switchRecord = useSelector((state) => state.switchRecord);
+
+  console.log("switchRecord: " + switchRecord);
+
   return (
     <View style={styles.container}>
       <Text>All Locations</Text>
-      <ChangeDate />
-      <RecordExpense/>
-      <DisplayLocations email={email} />
+
+      <RecordExpense />
+
+      {switchRecord === "expense NOT recorded" && (
+        <DisplayLocations_NR email={email} />
+      )}
+
+      {switchRecord === "expense recorded" && (
+        <DisplayLocations_R email={email} />
+      )}
     </View>
   );
 }

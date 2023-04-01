@@ -5,6 +5,8 @@ export const currentPositionAction = (data) => {
   };
 };
 
+//***************************************************** */
+
 export const locationsAction_add = (data) => {
   return {
     type: "store_location",
@@ -28,4 +30,15 @@ export const locationsAction_countTime = (data) => {
 
 export const locationsAction_passed = () => ({
   type: "passed_locations",
+});
+
+//***************************************************** */
+export const switchRecordAction = (data) => ({
+  type: "switch-Record",
+  payload: data,
+});
+//***************************************************** */
+export const dateRecordAction = (data) => ({
+  type: "date-Record",
+  payload: data,
 });

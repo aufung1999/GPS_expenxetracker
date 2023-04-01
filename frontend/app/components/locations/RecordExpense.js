@@ -1,14 +1,23 @@
 import { View, Text, StyleSheet, Button } from "react-native";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { switchRecordAction } from "../../../Redux/actions";
 
 export default function ChangeDate() {
+  const dispatch = useDispatch();
   return (
     <View style={styles.itemslayout}>
       <View style={styles.item}>
-        <Button title="Not Recorded" />
+        <Button
+          title="Not Recorded"
+          onPress={() => dispatch(switchRecordAction("expense NOT recorded"))}
+        />
       </View>
       <View style={styles.item}>
-        <Button title="Recorded" />
+        <Button
+          title="Recorded"
+          onPress={() => dispatch(switchRecordAction("expense recorded"))}
+        />
       </View>
     </View>
   );
