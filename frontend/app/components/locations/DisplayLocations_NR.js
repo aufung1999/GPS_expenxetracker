@@ -6,10 +6,13 @@ import {
   TextInput,
   Button,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import client from "../../api/client";
 import { useSelector } from "react-redux";
+
+const { width, height } = Dimensions.get("window");
 
 export default function DisplayLocations_NR({ email }) {
   const [data, setData] = useState([]);
@@ -58,8 +61,8 @@ export default function DisplayLocations_NR({ email }) {
   };
 
   const remove = async (e, _id) => {
-    console.log('removed')
-    console.log(_id)
+    console.log("removed");
+    console.log(_id);
 
     const res = await client.post("/remove-location", {
       email: email,
@@ -68,10 +71,9 @@ export default function DisplayLocations_NR({ email }) {
 
     console.log(res.data);
 
-    const filtered_data = data.filter(each => each._id != _id)
+    const filtered_data = data.filter((each) => each._id != _id);
 
-    setData(filtered_data)
-
+    setData(filtered_data);
   };
 
   return (
@@ -94,7 +96,7 @@ export default function DisplayLocations_NR({ email }) {
               onPress={(e) => remove(e, each._id)}
               style={styles.removeButton}
             >
-              <Text >remove</Text>
+              <Text>remove</Text>
             </TouchableOpacity>
           </View>
         ))}
@@ -105,7 +107,9 @@ export default function DisplayLocations_NR({ email }) {
 
 const styles = StyleSheet.create({
   itemslayout: {
-    // flex: 1,
+    // flex: 3,
+    width: width,
+    height: height,
     flexDirection: "row",
     flexWrap: "wrap",
     backgroundColor: "#D3D3D3",
@@ -118,7 +122,6 @@ const styles = StyleSheet.create({
     width: "40%",
     height: 100,
     margin: 4,
-    // padding: 4,
     alignItems: "center",
     // justifyContent: "center",
   },
@@ -127,7 +130,6 @@ const styles = StyleSheet.create({
   locationName: {
     height: "40%",
     margin: 2,
-
   },
   inputMoney: {
     // height: "auto",

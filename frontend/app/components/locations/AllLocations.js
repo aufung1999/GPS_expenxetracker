@@ -28,11 +28,15 @@ export default function AllLocations({ email }) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({  
   container: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+
+    borderWidth: 1,
+    borderColor: "thistle",
+    // borderRadius: 50,
   },
 });

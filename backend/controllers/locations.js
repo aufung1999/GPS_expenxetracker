@@ -83,7 +83,7 @@ exports.getLocations = async (req, res) => {
 
   try {
     if (switchRecord === "expense NOT recorded") {
-      const target_Locations = await Location.find({ user: target_User });
+      const target_Locations = await Location.find({ user: target_User }).sort({"date":1})
       return res.json({ success: true, location: target_Locations });
     }
 
@@ -96,7 +96,7 @@ exports.getLocations = async (req, res) => {
           },
           { date: { $regex: today } },
         ],
-      });
+      }).sort({"date":1})
 
       console.log(target_Locations);
       return res.json({ success: true, location: target_Locations });
@@ -114,7 +114,7 @@ exports.getLocations = async (req, res) => {
           },
           { date: { $regex: currentMonth } },
         ],
-      });
+      }).sort({"date":1})
       return res.json({ success: true, location: target_Locations });
     }
 
@@ -130,7 +130,7 @@ exports.getLocations = async (req, res) => {
           },
           { date: { $regex: currentYear } },
         ],
-      });
+      }).sort({"date":1})
       return res.json({ success: true, location: target_Locations });
     }
   } catch (error) {
