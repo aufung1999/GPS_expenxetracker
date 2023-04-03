@@ -25,9 +25,8 @@ export default function DisplayLocations_R_Data({
   }
 
   return (
-    <View style={styles.item} key={index}>
+    <View style={styles.item} key={each._id}>
       <Text style={styles.locationName}>{each.name}</Text>
-      {/* <Text >{each._id}</Text> */}
       <TextInput
         style={styles.inputMoney}
         onChangeText={(e) => currentTextInput(e, each._id)}
@@ -44,7 +43,7 @@ const styles = StyleSheet.create({
   item: {
     backgroundColor: "#7cb48f",
     width: "40%",
-    height: height*0.15,
+    height: height * 0.15,
     margin: 4,
     alignItems: "center",
     // justifyContent: "center",

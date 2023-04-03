@@ -23,7 +23,8 @@ export default function DisplayLocations_NR({ email }) {
   const getData = async () => {
     // 1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
 
-    setData([]);
+    setData([]);  //CLean up data
+    setNumbers({})  //CLean up number
 
     const res = await client.post("/locations", {
       email: email,

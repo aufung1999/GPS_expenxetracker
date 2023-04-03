@@ -13,15 +13,19 @@ import client from "../../api/client";
 import ChangeDate from "./ChangeDate";
 import { useSelector } from "react-redux";
 import DisplayLocations_R_Data from "./DisplayLocations_R_Data";
+import DisplayLocations_R_Months from "./DisplayLocations_R_Months";
+import DisplayLocations_R_Years from "./DisplayLocations_R_Years";
 
 const { width, height } = Dimensions.get("window");
 
 export default function DisplayLocations_R({ email }) {
   const [data, setData] = useState([]);
   const [numbers, setNumbers] = useState({});
+  const [totalExpense, setTotalExpense] = useState({});
 
   const [DATES, setDATES] = useState([]);
   const [MONTHS, setMONTHS] = useState([]);
+  const [YEARS, setYEARS] = useState([]);
 
   const [count, setCount] = useState({});
   const [expandMonth, setExpandMonth] = useState([]);
@@ -33,8 +37,9 @@ export default function DisplayLocations_R({ email }) {
     // 1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
     setData([]); //CLean up data
     setDATES([]); //CLean up data
-    let dates = []; //CLean up data
-    let months = []; //CLean up data
+    let dates = []; //CLean up
+    let months = []; //CLean up
+    let years = []; //CLean up
 
     const res = await client.post("/locations", {
       email: email,
@@ -60,32 +65,85 @@ export default function DisplayLocations_R({ email }) {
         if (months.includes(each.date.substr(0, 7)) === false) {
           months.push(each.date.substr(0, 7));
         }
+
+        //4. get the YEARS for the categorization
+        // using substr method to get the MONTH
+        if (years.includes(each.date.substr(0, 4)) === false) {
+          years.push(each.date.substr(0, 4));
+        }
       }
     });
+    console.log("years: " + years);
+    console.log("months: " + months);
     setDATES(dates);
     setMONTHS(months);
+    setYEARS(years);
+  };
+
+  const calMonthExpense = () => {
+    let totalepenses = {};
+    let annualExpense = [];
+
+    YEARS.map((each_year) => {
+      MONTHS.map((each_month) => {
+        let monthExpenses = [];
+        // console.log(":::::::::: ");
+        data.map((each) => {
+          each["date"].substr(0, 4) === each_year &&
+          each["date"].substr(0, 7) === each_month
+            ? //get the MONTHLY expenses
+              (monthExpenses.push(parseInt(each["expense"])),
+              //get the ANNUAlLY expenses
+              annualExpense.push(parseInt(each["expense"])),
+              Object.assign(totalepenses, {
+                [each_month]: monthExpenses.reduce((a, b) => a + b),
+              }))
+            : null;
+        });
+        Object.assign(totalepenses, {
+          [each_year]: annualExpense.reduce((a, b) => a + b),
+        });
+      });
+    });
+    // console.log("totalExpense: " + JSON.stringify(totalExpense, null, 1));
+    setTotalExpense(totalepenses);
   };
 
   useEffect(() => {
     getData(); // 1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
   }, [dateRecord]);
 
-  // console.log(data);
+  useEffect(() => {
+    calMonthExpense();
+  }, [MONTHS, YEARS, dateRecord]);
 
   const submit = async () => {
     const res = await client.post("/store-expense", {
       email: email,
       numbers: numbers,
     });
-
     console.log(res.data);
 
-    getData(); // 1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+    // getData(); // 1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+
+    const find_data = data.find((each) =>
+      Object.keys(numbers).includes(each._id)
+    );
+    find_data["expense"] = numbers[find_data._id];
+
+    setData((existingItems) => {
+      return existingItems.map((each) => {
+        return Object.keys(numbers).includes(each._id) ? find_data : each;
+      });
+    });
   };
 
   const expand = (each_month) => {
+    //think about more base cases
+
     if (count[each_month] == undefined) {
-      setCount({ ...count, [each_month]: 0 });
+      setCount({ ...count, [each_month]: 1 });
+      setExpandMonth((prev) => [...prev, each_month]);
     } else if (count[each_month] != undefined) {
       setCount({ ...count, [each_month]: count[each_month] + 1 });
       if (count[each_month] % 2 !== 0) {
@@ -105,39 +163,47 @@ export default function DisplayLocations_R({ email }) {
       <Button title="submit" onPress={submit} />
       <ChangeDate />
       <ScrollView contentContainerStyle={styles.itemslayout}>
-        {MONTHS?.map((each_month, ind) => (
-          <View>
-            <Button
-              title={each_month}
-              onPress={() => expand(each_month)}
-              key={ind}
+        {/* THIS IS FOR MONTHLY dateRecord MODE */}
+        {dateRecord === "1 MONTH" &&
+          MONTHS?.map((each_month, ind) => (
+            <DisplayLocations_R_Months
+              ind={ind}
+              data={data}
+              totalExpense={totalExpense}
+              expand={expand}
+              expandMonth={expandMonth}
+              each_year={each_year}
+              each_month={each_month}
+              DATES={DATES}
+              numbers={numbers}
+              setNumbers={setNumbers}
+              key={"months" + ind}
             />
-            {DATES?.map(
-              (each_date, i) =>
-                expandMonth.includes(each_month) &&
-                each_month == each_date.substr(0, 7) && (
-                  <View>
-                    <TouchableOpacity>
-                      <Text>{each_date}</Text>
-                    </TouchableOpacity>
-                    <View style={styles.dateContainer} key={i}>
-                      {data?.map(
-                        (each, index) =>
-                          each_date == each.date && (
-                            <DisplayLocations_R_Data
-                              each={each}
-                              index={index}
-                              numbers={numbers}
-                              setNumbers={setNumbers}
-                            />
-                          )
-                      )}
-                    </View>
-                  </View>
-                )
-            )}
-          </View>
-        ))}
+          ))}
+        {/* THIS IS FOR ANNUALLY dateRecord MODE */}
+        {dateRecord === "1 YEAR" &&
+          YEARS?.map((each_year, INDEX) => (
+            <View key={each_year + INDEX}>
+              <Text>
+                {each_year} Expense: {totalExpense[each_year]}
+              </Text>
+              {MONTHS?.map((each_month, ind) => (
+                <DisplayLocations_R_Months
+                  ind={ind}
+                  data={data}
+                  totalExpense={totalExpense}
+                  expand={expand}
+                  expandMonth={expandMonth}
+                  each_year={each_year}
+                  each_month={each_month}
+                  DATES={DATES}
+                  numbers={numbers}
+                  setNumbers={setNumbers}
+                  key={"months" + ind}
+                />
+              ))}
+            </View>
+          ))}
       </ScrollView>
     </View>
   );
