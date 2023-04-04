@@ -9,7 +9,7 @@ import DisplayLocations_R from "./DisplayLocations_R";
 export default function AllLocations({ email }) {
   const switchRecord = useSelector((state) => state.switchRecord);
 
-  console.log("switchRecord: " + switchRecord);
+  // console.log("switchRecord: " + switchRecord);
 
   return (
     <View style={styles.container}>
@@ -28,7 +28,7 @@ export default function AllLocations({ email }) {
   );
 }
 
-const styles = StyleSheet.create({  
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",

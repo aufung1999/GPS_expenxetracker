@@ -9,12 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import client from "../../api/client";
-import ChangeDate from "./ChangeDate";
-import { useSelector } from "react-redux";
 import DisplayLocations_R_Data from "./DisplayLocations_R_Data";
-
-const { width, height } = Dimensions.get("window");
 
 export default function DisplayLocations_R_Months({
   ind,

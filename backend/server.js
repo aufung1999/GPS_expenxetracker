@@ -4,6 +4,7 @@ require('./models/db');
 
 const userRouter = require('./routes/users');
 const locationRouter = require('./routes/locations');
+const billRouter = require('./routes/bills');
 
 const User = require('./models/user');
 
@@ -13,6 +14,8 @@ app.use(express.json());
 app.use(userRouter);
 
 app.use(locationRouter);
+
+app.use(billRouter);
 
 app.get('/test', (req, res) => {
   res.send('Hello world');

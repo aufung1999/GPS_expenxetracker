@@ -9,6 +9,7 @@ import {
 import Home from './components/Pages/Home';
 import Locations from './components/Pages/Locations';
 import { useLogin } from './context/LoginProvider';
+import Bills from './components/Pages/Bills';
 
 const Drawer = createDrawerNavigator();
 
@@ -75,6 +76,7 @@ const DrawerNavigator = () => {
     >
       <Drawer.Screen component={Home} name='Home' />
       <Drawer.Screen component={Locations} name='Locations' />
+      <Drawer.Screen component={Bills} name='Bills' />
       {/* <Drawer.Screen component={BackgroundMap} name='Background' /> */}
     </Drawer.Navigator>
   );

@@ -14,7 +14,6 @@ import ChangeDate from "./ChangeDate";
 import { useSelector } from "react-redux";
 import DisplayLocations_R_Data from "./DisplayLocations_R_Data";
 import DisplayLocations_R_Months from "./DisplayLocations_R_Months";
-import DisplayLocations_R_Years from "./DisplayLocations_R_Years";
 
 const { width, height } = Dimensions.get("window");
 
@@ -163,7 +162,28 @@ export default function DisplayLocations_R({ email }) {
       <Button title="submit" onPress={submit} />
       <ChangeDate />
       <ScrollView contentContainerStyle={styles.itemslayout}>
-        {/* THIS IS FOR MONTHLY dateRecord MODE */}
+        {/* THIS IS FOR ***DAILY*** dateRecord MODE */}
+        {dateRecord === "TODAY" &&
+          DATES?.map((each_date, i) => (
+            <View key={each_date + i}>
+              <Text>{each_date}</Text>
+              <View style={styles.dateContainer}>
+                {data?.map(
+                  (each, index) =>
+                    each_date == each.date && (
+                      <DisplayLocations_R_Data
+                        each={each}
+                        index={index}
+                        numbers={numbers}
+                        setNumbers={setNumbers}
+                        key={"date" + i}
+                      />
+                    )
+                )}
+              </View>
+            </View>
+          ))}
+        {/* THIS IS FOR ***MONTHLY*** dateRecord MODE */}
         {dateRecord === "1 MONTH" &&
           MONTHS?.map((each_month, ind) => (
             <DisplayLocations_R_Months
@@ -172,7 +192,6 @@ export default function DisplayLocations_R({ email }) {
               totalExpense={totalExpense}
               expand={expand}
               expandMonth={expandMonth}
-              each_year={each_year}
               each_month={each_month}
               DATES={DATES}
               numbers={numbers}
@@ -180,7 +199,7 @@ export default function DisplayLocations_R({ email }) {
               key={"months" + ind}
             />
           ))}
-        {/* THIS IS FOR ANNUALLY dateRecord MODE */}
+        {/* THIS IS FOR ***ANNUALLY*** dateRecord MODE */}
         {dateRecord === "1 YEAR" &&
           YEARS?.map((each_year, INDEX) => (
             <View key={each_year + INDEX}>

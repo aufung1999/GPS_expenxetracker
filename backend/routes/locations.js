@@ -15,4 +15,4 @@ router.post("/locations", getLocations);
 router.post("/store-expense", storeExpense);
 //GET
 
-module.exports = router;
+module.exports = router; 

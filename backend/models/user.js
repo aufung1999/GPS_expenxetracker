@@ -17,7 +17,8 @@ const userSchema = new mongoose.Schema({
   },
   avatar: String,
   tokens: [{ type: Object }],
-  locations: [{type: mongoose.Schema.Types.ObjectId, ref: 'Location'  }]
+  locations: [{type: mongoose.Schema.Types.ObjectId, ref: 'Location'  }],
+  bills: [{type: mongoose.Schema.Types.ObjectId, ref: 'Bill'  }]
 
 });
 

@@ -83,7 +83,9 @@ exports.getLocations = async (req, res) => {
 
   try {
     if (switchRecord === "expense NOT recorded") {
-      const target_Locations = await Location.find({ user: target_User }).sort({"date":1})
+      const target_Locations = await Location.find({ user: target_User }).sort({
+        date: 1,
+      });
       return res.json({ success: true, location: target_Locations });
     }
 
@@ -96,7 +98,7 @@ exports.getLocations = async (req, res) => {
           },
           { date: { $regex: today } },
         ],
-      }).sort({"date":1})
+      }).sort({ date: 1 });
 
       console.log(target_Locations);
       return res.json({ success: true, location: target_Locations });
@@ -114,7 +116,7 @@ exports.getLocations = async (req, res) => {
           },
           { date: { $regex: currentMonth } },
         ],
-      }).sort({"date":1})
+      }).sort({ date: 1 });
       return res.json({ success: true, location: target_Locations });
     }
 
@@ -130,7 +132,7 @@ exports.getLocations = async (req, res) => {
           },
           { date: { $regex: currentYear } },
         ],
-      }).sort({"date":1})
+      }).sort({ date: 1 });
       return res.json({ success: true, location: target_Locations });
     }
   } catch (error) {
@@ -153,7 +155,7 @@ exports.storeExpense = async (req, res) => {
   try {
     target_Locations.map(async (each) => {
       console.log("each: " + each);
-      console.log("each: " + typeof numbers[each]);
+      // console.log("each: " + typeof numbers[each]);
 
       await Location.updateOne(
         { _id: each },
