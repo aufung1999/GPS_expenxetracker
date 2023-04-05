@@ -19,7 +19,7 @@ const { width, height } = Dimensions.get("window");
 
 export default function DisplayLocations_R({ email }) {
   const [data, setData] = useState([]);
-  const [numbers, setNumbers] = useState({});
+  const [location_exp, setExpense] = useState({});
   const [totalExpense, setTotalExpense] = useState({});
 
   const [DATES, setDATES] = useState([]);
@@ -116,27 +116,6 @@ export default function DisplayLocations_R({ email }) {
     calMonthExpense();
   }, [MONTHS, YEARS, dateRecord]);
 
-  const submit = async () => {
-    const res = await client.post("/store-expense", {
-      email: email,
-      numbers: numbers,
-    });
-    console.log(res.data);
-
-    // getData(); // 1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-
-    const find_data = data.find((each) =>
-      Object.keys(numbers).includes(each._id)
-    );
-    find_data["expense"] = numbers[find_data._id];
-
-    setData((existingItems) => {
-      return existingItems.map((each) => {
-        return Object.keys(numbers).includes(each._id) ? find_data : each;
-      });
-    });
-  };
-
   const expand = (each_month) => {
     //think about more base cases
 
@@ -157,6 +136,30 @@ export default function DisplayLocations_R({ email }) {
     }
   };
 
+  const submit = async () => {
+    const res = await client.post("/store-expense", {
+      email: email,
+      location_exp: location_exp,
+    });
+    console.log(res.data);
+
+    // getData(); // 1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+
+    const find_data = data.find((each) =>
+      Object.keys(location_exp).includes(each._id)
+    );
+    find_data["expense"] = location_exp[find_data._id];
+
+    setData((existingItems) => {
+      return existingItems.map((each) => {
+        return Object.keys(location_exp).includes(each._id) ? find_data : each;
+      });
+    });
+
+    // setExpense({})
+
+  };
+
   return (
     <View>
       <Button title="submit" onPress={submit} />
@@ -174,9 +177,9 @@ export default function DisplayLocations_R({ email }) {
                       <DisplayLocations_R_Data
                         each={each}
                         index={index}
-                        numbers={numbers}
-                        setNumbers={setNumbers}
-                        key={"date" + i}
+                        location_exp={location_exp}
+                        setExpense={setExpense}
+                        key={"DAILYadssadassda" + each._id}
                       />
                     )
                 )}
@@ -194,9 +197,10 @@ export default function DisplayLocations_R({ email }) {
               expandMonth={expandMonth}
               each_month={each_month}
               DATES={DATES}
-              numbers={numbers}
-              setNumbers={setNumbers}
-              key={"months" + ind}
+              location_exp={location_exp}
+              setExpense={setExpense}
+              dateRecord={dateRecord}
+              key={"MONTHLY" + ind}
             />
           ))}
         {/* THIS IS FOR ***ANNUALLY*** dateRecord MODE */}
@@ -206,21 +210,25 @@ export default function DisplayLocations_R({ email }) {
               <Text>
                 {each_year} Expense: {totalExpense[each_year]}
               </Text>
-              {MONTHS?.map((each_month, ind) => (
-                <DisplayLocations_R_Months
-                  ind={ind}
-                  data={data}
-                  totalExpense={totalExpense}
-                  expand={expand}
-                  expandMonth={expandMonth}
-                  each_year={each_year}
-                  each_month={each_month}
-                  DATES={DATES}
-                  numbers={numbers}
-                  setNumbers={setNumbers}
-                  key={"months" + ind}
-                />
-              ))}
+              {MONTHS?.map(
+                (each_month, ind) =>
+                  each_year == each_month.substr(0, 4) && (
+                    <DisplayLocations_R_Months
+                      ind={ind}
+                      data={data}
+                      totalExpense={totalExpense}
+                      expand={expand}
+                      expandMonth={expandMonth}
+                      each_year={each_year}
+                      each_month={each_month}
+                      DATES={DATES}
+                      location_exp={location_exp}
+                      setExpense={setExpense}
+                      dateRecord={dateRecord}
+                      key={"ANNUALLY" + ind}
+                    />
+                  )
+              )}
             </View>
           ))}
       </ScrollView>

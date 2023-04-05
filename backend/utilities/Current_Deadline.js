@@ -30,7 +30,13 @@ exports.Current_Deadline = (statement, due_date, frequency) => {
       Deadline = new Date(timestamps).toISOString().split("T")[0].substr(0, 10);
       break;
     case "Recount date":
-        
+      timestamps = new Date(due_date);
+      Deadline = new Date(
+        timestamps.setMonth(timestamps.getMonth() + frequency)
+      )
+        .toISOString()
+        .split("T")[0]
+        .substr(0, 10);
       break;
   }
 

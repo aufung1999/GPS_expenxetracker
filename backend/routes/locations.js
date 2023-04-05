@@ -5,6 +5,7 @@ const {
   getLocations,
   storeExpense,
 } = require("../controllers/locations");
+const { updateStatistics } = require("../controllers/statistics");
 
 const router = express.Router();
 
@@ -12,7 +13,7 @@ const router = express.Router();
 router.post("/store-location", uploadLocation);
 router.post("/remove-location", removeLocation);
 router.post("/locations", getLocations);
-router.post("/store-expense", storeExpense);
+router.post("/store-expense",updateStatistics, storeExpense);
 //GET
 
-module.exports = router; 
+module.exports = router;

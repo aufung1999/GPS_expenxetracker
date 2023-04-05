@@ -4,6 +4,7 @@ const Bill = require("../models/bill");
 const { dateDiffInDays } = require("../utilities/dateDiffInDays");
 const { Current_Deadline } = require("../utilities/Current_Deadline");
 
+//  -----------add Bill-----------
 exports.addBill = async (req, res) => {
   console.log("req.body: " + JSON.stringify(req.body, null, 1));
 
@@ -61,27 +62,37 @@ exports.addBill = async (req, res) => {
   }
 };
 
+//##########################################################################################################################################################################################################################################
+// "countDown_days"
+//  "due_date"
+//  "due_status"
+//  "total_expense"
 exports.newRoundBills = async (req, res, next) => {
-  if (req.body.isChecked === undefined) {
+  if (req.body.bill_exp === undefined) {
     next();
   }
-  if (req.body.isChecked !== undefined) {
-    console.log("req.body.isChecked: " + req.body.isChecked);
+  if (req.body.bill_exp !== undefined) {
+    console.log("req.body.bill_exp: " + req.body.bill_exp);
     //-----------------------------------------------------------
 
-    const { email, isChecked } = req.body;
+    const { email, bill_exp } = req.body;
 
-    for (const _id in isChecked) {
-      if (isChecked[_id] === true) {
+    for (const _id in bill_exp) {
+      if (bill_exp[_id] === true) {
         const target_Bill = await Bill.findOne({
           _id: _id,
         });
 
-        const { CurrentDate, Deadline } = Current_Deadline(
+        const { CurrentDate, Deadline } = await Current_Deadline(
           "Recount date",
           target_Bill.due_date,
           target_Bill.frequency
         );
+
+        const difference = await dateDiffInDays(CurrentDate, Deadline);
+
+        // const due_date = target_Bill.due_date
+        // const bill_price = target_Bill.bill_price
 
         await Bill.updateOne(
           {
@@ -90,9 +101,10 @@ exports.newRoundBills = async (req, res, next) => {
           },
           {
             $set: {
-              countDown_days: CurrentDate,
+              countDown_days: difference,
               due_date: Deadline,
               due_status: "Not Today",
+            //   total_expense: [{[due_date]:bill_price}],
             },
           }
         );
@@ -103,7 +115,9 @@ exports.newRoundBills = async (req, res, next) => {
   }
 };
 
-//Mainly, UPDATE the countDown_days
+//Mainly, UPDATE the
+//  "countDown_days"
+//  if-"due_status"
 exports.updateBills = async (req, res, next) => {
   const { email } = req.body;
   const target_User = await User.findOne({ email: email });
@@ -170,3 +184,5 @@ exports.getBills = async (req, res) => {
     res.json({ success: false, message: "FAILED to GET BILLS" });
   }
 };
+
+//##########################################################################################################################################################################################################################################

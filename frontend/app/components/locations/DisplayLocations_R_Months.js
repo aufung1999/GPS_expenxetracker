@@ -20,8 +20,9 @@ export default function DisplayLocations_R_Months({
   expandMonth,
   totalExpense,
   DATES,
-  numbers,
-  setNumbers,
+  location_exp,
+  setExpense,
+  dateRecord,
 }) {
   return (
     <View key={"View" + each_month + ind}>
@@ -35,7 +36,7 @@ export default function DisplayLocations_R_Months({
       {DATES?.map(
         (each_date, i) =>
           expandMonth.includes(each_month) &&
-          each_year == each_date.substr(0, 4) &&
+
           each_month == each_date.substr(0, 7) && (
             <View key={each_date + i}>
               <Text >{each_date}</Text>
@@ -46,9 +47,9 @@ export default function DisplayLocations_R_Months({
                       <DisplayLocations_R_Data
                         each={each}
                         index={index}
-                        numbers={numbers}
-                        setNumbers={setNumbers}
-                        key={"date"+i}
+                        location_exp={location_exp}
+                        setExpense={setExpense}
+                        key={"R_Months"+dateRecord+each._id}
                       />
                     )
                 )}

@@ -142,26 +142,26 @@ exports.getLocations = async (req, res) => {
 
 exports.storeExpense = async (req, res) => {
   console.log("***storeExpense:***", req.body);
-  console.log("***_id:***", req.body.numbers);
+  console.log("***_id:***", req.body.location_exp);
 
-  const { email, numbers } = req.body;
+  const { email, location_exp } = req.body;
 
   const target_User = await User.findOne({ email: email });
 
-  const target_Locations = target_User["locations"].filter(
-    (each) => each in numbers === true
+  const target_Locations = await target_User["locations"].find((each) =>
+    Object.keys(location_exp).includes(each._id.toString())
   );
 
-  try {
-    target_Locations.map(async (each) => {
-      console.log("each: " + each);
-      // console.log("each: " + typeof numbers[each]);
+  console.log("target_Locations: " + target_Locations);
 
+  try {
+    for (const key in location_exp) {
       await Location.updateOne(
-        { _id: each },
-        { $set: { expense: numbers[each] } }
+        { _id: key },
+        { $set: { expense: location_exp[key] } }
       );
-    });
+    }
+
     res.json({ success: true, message: "Updated" });
   } catch (error) {
     // console.log('error: ' + error)

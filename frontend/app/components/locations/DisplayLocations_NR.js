@@ -16,7 +16,7 @@ const { width, height } = Dimensions.get("window");
 
 export default function DisplayLocations_NR({ email }) {
   const [data, setData] = useState([]);
-  const [numbers, setNumbers] = useState({});
+  const [location_exp, setExpense] = useState({});
 
   const switchRecord = useSelector((state) => state.switchRecord);
 
@@ -24,7 +24,7 @@ export default function DisplayLocations_NR({ email }) {
     // 1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
 
     setData([]);  //CLean up data
-    setNumbers({})  //CLean up number
+    setExpense({})  //CLean up number
 
     const res = await client.post("/locations", {
       email: email,
@@ -47,13 +47,13 @@ export default function DisplayLocations_NR({ email }) {
     console.log("index: " + _id);
     console.log("e.target.value: " + e);
 
-    setNumbers({ ...numbers, [_id]: e });
+    setExpense({ ...location_exp, [_id]: e });
   }
 
   const submit = async () => {
     const res = await client.post("/store-expense", {
       email: email,
-      numbers: numbers,
+      location_exp: location_exp,
     });
 
     console.log(res.data);
@@ -88,7 +88,7 @@ export default function DisplayLocations_NR({ email }) {
             <TextInput
               style={styles.inputMoney}
               onChangeText={(e) => currentTextInput(e, each._id)}
-              value={numbers[each._id] != undefined ? numbers[each._id] : ""}
+              value={location_exp[each._id] != undefined ? location_exp[each._id] : ""}
               placeholder="Spent$"
               keyboardType="numeric"
             />

@@ -14,14 +14,14 @@ const { width, height } = Dimensions.get("window");
 export default function DisplayLocations_R_Data({
   each,
   index,
-  numbers,
-  setNumbers,
+  location_exp,
+  setExpense,
 }) {
   function currentTextInput(e, _id) {
     console.log("index: " + _id);
     console.log("e.target.value: " + e);
 
-    setNumbers({ ...numbers, [_id]: e });
+    setExpense({ ...location_exp, [_id]: e });
   }
 
   return (
@@ -30,7 +30,7 @@ export default function DisplayLocations_R_Data({
       <TextInput
         style={styles.inputMoney}
         onChangeText={(e) => currentTextInput(e, each._id)}
-        value={numbers[each._id] != undefined ? numbers[each._id] : ""}
+        value={location_exp[each._id] != undefined ? location_exp[each._id] : ""}
         placeholder="Spent$"
         keyboardType="numeric"
       />

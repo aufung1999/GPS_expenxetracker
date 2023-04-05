@@ -17,36 +17,40 @@ import client from "../../api/client";
 const { width, height } = Dimensions.get("window");
 
 export default function ShowBills({ email, bills, getBills }) {
-  const [isChecked, setChecked] = useState({});
+  const [bill_exp, setExpense] = useState({});
 
   useEffect(() => {
     getBills(); //11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
   }, []);
 
   const onCheck_CheckBox = (e, _id) => {
-    if (isChecked[_id] === undefined) {
-      setChecked({ ...isChecked, [_id]: true });
+    if (bill_exp[_id] === undefined) {
+      setExpense({ ...bill_exp, [_id]: true });
     }
-    if (isChecked[_id] !== undefined) {
-      setChecked({ ...isChecked, [_id]: !isChecked[_id] });
+    if (bill_exp[_id] !== undefined) {
+      setExpense({ ...bill_exp, [_id]: !bill_exp[_id] });
     }
   };
 
   const submit = async () => {
-    const res = await client.post("/store-expense", {
+    const res = await client.post("/bills", {
       email: email,
-      isChecked: isChecked,
+      bill_exp: bill_exp,
     });
 
-    // console.log(res.data);
+    getBills(); // (DisplayLocations_R.js???) 1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
 
-    getBills(); // 1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+    setExpense({}); //Clean up state
   };
 
   return (
     <View>
       <Text style={{ textAlign: "center" }}>ShowBills</Text>
-      <Button title="Submit" onPress={submit} />
+
+      {bills?.some((each) => each.due_status === "Pay Today") && (
+        <Button title="Submit" onPress={submit} />
+      )}
+
       <ScrollView contentContainerStyle={styles.itemslayout}>
         {bills?.map((each, index) => (
           <View key={index} style={styles.item}>
@@ -56,11 +60,12 @@ export default function ShowBills({ email, bills, getBills }) {
             <Text>Days Left: {each.countDown_days}</Text>
             <Text>every {each.frequency} months</Text>
             <Text>Status: {each.due_status}</Text>
+            {/* <Text>Expense: {each.total_expense}</Text> */}
             {each.due_status === "Pay Today" && (
               <Checkbox
-                value={isChecked}
+                value={bill_exp}
                 onValueChange={(e) => onCheck_CheckBox(e, each._id)}
-                color={isChecked[each._id] ? "#4630EB" : undefined}
+                color={bill_exp[each._id] ? "#4630EB" : undefined}
               />
             )}
           </View>
