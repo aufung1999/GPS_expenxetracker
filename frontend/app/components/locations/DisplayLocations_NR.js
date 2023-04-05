@@ -19,12 +19,13 @@ export default function DisplayLocations_NR({ email }) {
   const [location_exp, setExpense] = useState({});
 
   const switchRecord = useSelector((state) => state.switchRecord);
+  const Screen = useSelector((state) => state.Screen);
 
   const getData = async () => {
     // 1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
 
-    setData([]);  //CLean up data
-    setExpense({})  //CLean up number
+    setData([]); //CLean up data
+    setExpense({}); //CLean up number
 
     const res = await client.post("/locations", {
       email: email,
@@ -40,7 +41,7 @@ export default function DisplayLocations_NR({ email }) {
 
   useEffect(() => {
     getData(); // 1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-  }, []);
+  }, [Screen]);
 
   // console.log(data);
   function currentTextInput(e, _id) {
@@ -88,7 +89,11 @@ export default function DisplayLocations_NR({ email }) {
             <TextInput
               style={styles.inputMoney}
               onChangeText={(e) => currentTextInput(e, each._id)}
-              value={location_exp[each._id] != undefined ? location_exp[each._id] : ""}
+              value={
+                location_exp[each._id] != undefined
+                  ? location_exp[each._id]
+                  : ""
+              }
               placeholder="Spent$"
               keyboardType="numeric"
             />

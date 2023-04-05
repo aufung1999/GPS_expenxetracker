@@ -42,3 +42,8 @@ export const dateRecordAction = (data) => ({
   type: "date-Record",
   payload: data,
 });
+//***************************************************** */
+export const ScreenAction = (data) => ({
+  type: "Screen changed",
+  payload: data,
+});

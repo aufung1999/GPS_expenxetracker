@@ -75,6 +75,16 @@ const dateRecordReducer = (state = "TODAY", action) => {
       return state;
   }
 };
+//######################################################################################################
+
+const ScreenReducer = (state = "", action) => {
+  switch (action.type) {
+    case "Screen changed":
+      return action.payload;
+    default:
+      return state;
+  }
+};
 
 //######################################################################################################
 
@@ -88,6 +98,8 @@ const reducers = combineReducers({
   switchRecord: switchRecordReducer,
 
   dateRecord: dateRecordReducer,
+
+  Screen: ScreenReducer,
 });
 
 export default reducers;

@@ -31,6 +31,7 @@ export default function DisplayLocations_R({ email }) {
 
   const dateRecord = useSelector((state) => state.dateRecord);
   const switchRecord = useSelector((state) => state.switchRecord); //as the default of DATESRecorder has "Today", so it is never undefined
+  const Screen = useSelector((state) => state.Screen);
 
   const getData = async () => {
     // 1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
@@ -110,7 +111,7 @@ export default function DisplayLocations_R({ email }) {
 
   useEffect(() => {
     getData(); // 1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-  }, [dateRecord]);
+  }, [dateRecord, Screen]);
 
   useEffect(() => {
     calMonthExpense();
@@ -143,21 +144,20 @@ export default function DisplayLocations_R({ email }) {
     });
     console.log(res.data);
 
-    // getData(); // 1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+    getData(); // 1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
 
-    const find_data = data.find((each) =>
-      Object.keys(location_exp).includes(each._id)
-    );
-    find_data["expense"] = location_exp[find_data._id];
+    // const find_data = data.find((each) =>
+    //   Object.keys(location_exp).includes(each._id)
+    // );
+    // find_data["expense"] = location_exp[find_data._id];
 
-    setData((existingItems) => {
-      return existingItems.map((each) => {
-        return Object.keys(location_exp).includes(each._id) ? find_data : each;
-      });
-    });
+    // setData((existingItems) => {
+    //   return existingItems.map((each) => {
+    //     return Object.keys(location_exp).includes(each._id) ? find_data : each;
+    //   });
+    // });
 
-    // setExpense({})
-
+    setExpense({});
   };
 
   return (

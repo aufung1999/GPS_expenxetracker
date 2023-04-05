@@ -13,15 +13,18 @@ import React, { useEffect, useState } from "react";
 import Checkbox from "expo-checkbox";
 
 import client from "../../api/client";
+import { useSelector } from "react-redux";
 
 const { width, height } = Dimensions.get("window");
 
 export default function ShowBills({ email, bills, getBills }) {
   const [bill_exp, setExpense] = useState({});
 
+  const Screen = useSelector((state) => state.Screen);
+
   useEffect(() => {
     getBills(); //11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-  }, []);
+  }, [Screen]);
 
   const onCheck_CheckBox = (e, _id) => {
     if (bill_exp[_id] === undefined) {

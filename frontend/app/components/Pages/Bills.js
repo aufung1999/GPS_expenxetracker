@@ -14,11 +14,17 @@ import { useLogin } from "../../context/LoginProvider";
 import ShowBills from "../Bills/ShowBills";
 import { useState } from "react";
 import client from "../../api/client";
+import { useDispatch } from "react-redux";
+import { ScreenAction } from "../../../Redux/actions";
 
 export default function Bills() {
   const { setIsLoggedIn, profile } = useLogin();
 
   const [bills, setBills] = useState([]);
+
+  const dispatch = useDispatch();
+
+  dispatch(ScreenAction("Bills"));
 
   const getBills = async () => {
     //11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111

@@ -14,9 +14,10 @@ const statisticSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  location: { type: mongoose.Schema.Types.ObjectId, ref: "Location" },
+  bill: { type: mongoose.Schema.Types.ObjectId, ref: "Bill" },
   place_id: {
     type: String,
-    // required: true,
   },
 });
 
