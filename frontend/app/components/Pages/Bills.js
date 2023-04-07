@@ -12,7 +12,7 @@ import React from "react";
 import AddBill from "../Bills/AddBill";
 import { useLogin } from "../../context/LoginProvider";
 import ShowBills from "../Bills/ShowBills";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import client from "../../api/client";
 import { useDispatch } from "react-redux";
 import { ScreenAction } from "../../../Redux/actions";
@@ -24,7 +24,9 @@ export default function Bills() {
 
   const dispatch = useDispatch();
 
-  dispatch(ScreenAction("Bills"));
+  useEffect(() => {
+    dispatch(ScreenAction("Bills"));
+  }, []);
 
   const getBills = async () => {
     //11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
@@ -37,6 +39,7 @@ export default function Bills() {
     const res_array = res.data.location;
     res_array.map((each) => setBills((prev) => [...prev, each]));
   };
+
   return (
     <View style={styles.container}>
       <AddBill email={profile.email} getBills={getBills} />
@@ -53,8 +56,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // justifyContent: "center",
 
-    borderWidth: 10,
-    borderColor: "thistle",
+    // borderWidth: 5,
+    // borderColor: "thistle",
     // borderRadius: 50,
   },
 });

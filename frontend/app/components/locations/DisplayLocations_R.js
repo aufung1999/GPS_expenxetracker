@@ -14,6 +14,7 @@ import ChangeDate from "./ChangeDate";
 import { useSelector } from "react-redux";
 import DisplayLocations_R_Data from "./DisplayLocations_R_Data";
 import DisplayLocations_R_Months from "./DisplayLocations_R_Months";
+import { Pressable } from "react-native";
 
 const { width, height } = Dimensions.get("window");
 
@@ -162,7 +163,9 @@ export default function DisplayLocations_R({ email }) {
 
   return (
     <View>
-      <Button title="submit" onPress={submit} />
+      <Pressable onPress={submit} style={styles.button}>
+        <Text style={styles.text}>submit</Text>
+      </Pressable>
       <ChangeDate />
       <ScrollView contentContainerStyle={styles.itemslayout}>
         {/* THIS IS FOR ***DAILY*** dateRecord MODE */}
@@ -255,4 +258,23 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "thistle",
   },
+
+  //----------------SUBMIT BUTTON-----------------------------------------------------------------------------------------
+  button: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: "rgba(0, 0, 0,0.6)",
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: "bold",
+    letterSpacing: 0.25,
+    color: "white",
+  },
+  //---------------------------------------------------------------------------------------------------------
 });

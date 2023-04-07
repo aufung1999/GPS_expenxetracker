@@ -13,7 +13,7 @@ export default function AllLocations({ email }) {
 
   return (
     <View style={styles.container}>
-      <Text>All Locations</Text>
+      <Text style={styles.headline}>All Locations</Text>
 
       <RecordExpense />
 
@@ -33,10 +33,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center",
 
-    borderWidth: 1,
-    borderColor: "thistle",
-    // borderRadius: 50,
+    // borderWidth: 10,
+    // borderColor: "black",
+  },
+
+  headline:{
+    borderWidth:1,
   },
 });

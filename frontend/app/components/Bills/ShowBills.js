@@ -23,8 +23,13 @@ export default function ShowBills({ email, bills, getBills }) {
   const Screen = useSelector((state) => state.Screen);
 
   useEffect(() => {
+    const controller = new AbortController();
     getBills(); //11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-  }, [Screen]);
+    return () => {
+      // cancel the request before component unmounts
+      controller.abort();
+    };
+  }, []);
 
   const onCheck_CheckBox = (e, _id) => {
     if (bill_exp[_id] === undefined) {
@@ -56,7 +61,7 @@ export default function ShowBills({ email, bills, getBills }) {
 
       <ScrollView contentContainerStyle={styles.itemslayout}>
         {bills?.map((each, index) => (
-          <View key={index} style={styles.item}>
+          <View key={index} style={[styles.item, styles.elevation]}>
             <Text>bill: {each.bill}</Text>
             <Text>bill price: {each.bill_price}</Text>
             <Text>due date: {each.due_date}</Text>
@@ -80,46 +85,29 @@ export default function ShowBills({ email, bills, getBills }) {
 
 const styles = StyleSheet.create({
   itemslayout: {
-    // flex: 3,
+    flex: 1,
     width: width,
     height: height,
     flexDirection: "row",
     flexWrap: "wrap",
-    backgroundColor: "#D3D3D3",
+    backgroundColor: "aliceblue",
     // alignItems: "center",
     justifyContent: "center",
   },
 
   item: {
-    backgroundColor: "#7cb48f",
+    backgroundColor: "rgba(248, 248, 255, 1.0)",
     width: "40%",
     // height: 100,     //make it dynamic for the rendere <Text>
-    margin: 4,
+    margin: 10,
     alignItems: "center",
-    // justifyContent: "center",
+
+    borderRadius: 15,
+  },
+  elevation: {
+    elevation: 15,
+    shadowColor: "lavender ",
   },
 
-  //-----------------------------------------------------------------------------
-  locationName: {
-    height: "40%",
-    margin: 2,
-  },
-  inputMoney: {
-    // height: "auto",
-    width: "50%",
-    borderColor: "#D5DDE5",
-    borderWidth: 1,
-    textAlign: "center",
-    // padding:3,
-  },
-  removeButton: {
-    borderWidth: 1,
-    borderColor: "thistle",
-    borderRadius: 50,
-
-    width: "50%",
-    // height: "50%",
-    alignItems: "center",
-  },
   //-----------------------------------------------------------------------------
 });

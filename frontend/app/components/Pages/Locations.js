@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, StyleSheet, Text, Button } from "react-native";
 import { useDispatch } from "react-redux";
 import { ScreenAction } from "../../../Redux/actions";
@@ -10,7 +10,9 @@ const Locations = () => {
 
   const dispatch = useDispatch()
 
-  dispatch( ScreenAction("Locations")  )
+  useEffect(() => {
+    dispatch(ScreenAction("Locations"));
+  }, []);
 
   return (
     <View style={styles.container}>

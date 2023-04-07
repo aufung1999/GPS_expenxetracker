@@ -30,7 +30,9 @@ export default function DisplayLocations_R_Data({
       <TextInput
         style={styles.inputMoney}
         onChangeText={(e) => currentTextInput(e, each._id)}
-        value={location_exp[each._id] != undefined ? location_exp[each._id] : ""}
+        value={
+          location_exp[each._id] != undefined ? location_exp[each._id] : ""
+        }
         placeholder="Spent$"
         keyboardType="numeric"
       />
@@ -41,12 +43,13 @@ export default function DisplayLocations_R_Data({
 
 const styles = StyleSheet.create({
   item: {
-    backgroundColor: "#7cb48f",
+    backgroundColor: "rgba(248, 248, 255, 1.0)",
     width: "40%",
-    height: height * 0.15,
+    minHeight: 100, //make it dynamic for the rendere <Text>
     margin: 4,
     alignItems: "center",
-    // justifyContent: "center",
+    justifyContent: "center",
+    borderRadius: 15,
   },
   //-----------------------------------------------------------------------------
 

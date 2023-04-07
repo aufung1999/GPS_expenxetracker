@@ -113,7 +113,7 @@ export default function AddBill({ email, getBills }) {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.prefix}>due_date:</Text>
+          <Text style={styles.prefix}>date:</Text>
           <TextInput
             style={styles.middle}
             onChangeText={(e) => onCheck_due_date(e)}
@@ -121,7 +121,7 @@ export default function AddBill({ email, getBills }) {
             placeholder="DUE DATE"
             keyboardType="numeric"
           />
-          <Text style={styles.last}>{due_date.toString()}</Text>
+          <Text style={styles.last}  >{due_date.toString()}</Text>
         </View>
 
         <View style={styles.section}>
@@ -143,47 +143,50 @@ export default function AddBill({ email, getBills }) {
 
 const styles = StyleSheet.create({
   addbill: {
-    //   flex: 1,
+    // flex: 1,
     backgroundColor: "#fff",
     alignSelf: "center",
     //   justifyContent: "center",
     width: width * 0.7,
 
     borderWidth: 4,
-    borderColor: "red",
+    borderColor: "rgba(0, 191, 255, 0.1)",
+    borderRadius: 25,
     // borderRadius: 50,
+    elevation: 20,
   },
   itemslayout: {
-    // flex: 3,
-    // width: width,
-    // height: height,
     // flexDirection: "row",
+    margin: 10,
     flexWrap: "wrap",
-    backgroundColor: "#D3D3D3",
+    backgroundColor: "aliceblue",
+    borderRadius:25,
     // alignItems: "stretch",
     justifyContent: "center",
+    padding:7
   },
   section: {
     flexDirection: "row",
+    margin: 3,
   },
   prefix: {
-    borderWidth: 1,
-    borderColor: "green",
+    // borderWidth: 1,
+    // borderColor: "rgba(0, 171, 0, 0.1)",
     width: "20%",
     alignSelf: "center",
     textAlign: "center",
   },
   middle: {
     borderWidth: 1,
-    borderColor: "red",
+    borderColor: "rgba(255, 0, 0, 0.1)",
     width: "50%",
 
     // marginRight: 10,
     alignSelf: "center",
   },
   last: {
-    borderWidth: 1,
-    borderColor: "green",
+    // borderWidth: 1,
+    // borderColor: "rgba(0, 171, 0, 0.1)",
     width: "30%",
     alignSelf: "center",
     textAlign: "center",

@@ -11,6 +11,7 @@ import {
 import React, { useEffect, useState } from "react";
 import client from "../../api/client";
 import { useSelector } from "react-redux";
+import { Pressable } from "react-native";
 
 const { width, height } = Dimensions.get("window");
 
@@ -41,7 +42,7 @@ export default function DisplayLocations_NR({ email }) {
 
   useEffect(() => {
     getData(); // 1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-  }, [Screen]);
+  }, []);
 
   // console.log(data);
   function currentTextInput(e, _id) {
@@ -80,7 +81,9 @@ export default function DisplayLocations_NR({ email }) {
 
   return (
     <View>
-      <Button title="submit" onPress={submit} />
+      <Pressable onPress={submit} style={styles.button}>
+        <Text style={styles.text}>submit</Text>
+      </Pressable>
       <ScrollView contentContainerStyle={styles.itemslayout}>
         {data?.map((each, index) => (
           <View style={styles.item} key={index}>
@@ -113,7 +116,7 @@ export default function DisplayLocations_NR({ email }) {
 
 const styles = StyleSheet.create({
   itemslayout: {
-    // flex: 3,
+    flex: 1,
     width: width,
     height: height,
     flexDirection: "row",
@@ -124,17 +127,40 @@ const styles = StyleSheet.create({
   },
 
   item: {
-    backgroundColor: "#7cb48f",
+    backgroundColor: "rgba(248, 248, 255, 1.0)",
     width: "40%",
-    height: 100,
+    height: 100, //make it dynamic for the rendere <Text>
     margin: 4,
     alignItems: "center",
-    // justifyContent: "center",
+    justifyContent: "center",
+    borderRadius: 15,
   },
+  elevation: {
+    elevation: 15,
+    shadowColor: "lavender ",
+  },
+
+  //----------------SUBMIT BUTTON-----------------------------------------------------------------------------------------
+  button: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: "rgba(0, 0, 0,0.6)",
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: "bold",
+    letterSpacing: 0.25,
+    color: "white",
+  },
+  //---------------------------------------------------------------------------------------------------------
 
   //-----------------------------------------------------------------------------
   locationName: {
-    height: "40%",
     margin: 2,
   },
   inputMoney: {
