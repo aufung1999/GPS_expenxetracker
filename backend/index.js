@@ -1,11 +1,11 @@
 const express = require('express');
 require('dotenv').config();
-require('./backend/models/db');
+require('./models/db');
 
-const userRouter = require('./backend/routes/users');
-const locationRouter = require('./backend/routes/locations');
-const billRouter = require('./backend/routes/bills');
-const statisticRouter = require('./backend/routes/statistics');
+const userRouter = require('./routes/users');
+const locationRouter = require('./routes/locations');
+const billRouter = require('./routes/bills');
+const statisticRouter = require('./routes/statistics');
 
 const app = express();
 
