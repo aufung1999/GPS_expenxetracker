@@ -20,9 +20,9 @@ app.use(statisticRouter);
 //   res.send('Hello world');
 // });
 
-// app.get('/', (req, res) => {
-//   res.json({ success: true, message: 'Welcome to backend zone!' });
-// });
+app.get('/', (req, res) => {
+  res.json({ success: true, message: 'Welcome to backend zone!' });
+});
 
 app.listen(8000, () => {
   console.log('port is listening');
