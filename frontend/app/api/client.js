@@ -1,3 +1,5 @@
-import axios from 'axios';
+import axios from "axios";
 
-export default axios.create({ baseURL: 'http://192.168.2.16:8000' });
+export default axios.create({
+  baseURL: "https://gpsexpensetracker6.herokuapp.com",
+});
