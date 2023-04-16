@@ -13,6 +13,10 @@
     "preview3": {
       "developmentClient": true
     },
-    "production": {}
+    "production": {
+      "env": {
+        "GOOGLE_API": "AIzaSyCAzWTNbMapvSe80tFJHGw2N1PvVivEuLQ"
+      }
+    }
   }
 }
