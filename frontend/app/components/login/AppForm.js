@@ -46,7 +46,7 @@ export default function AppForm({ navigation }) {
         <FormHeader
           leftHeading='Welcome '
           rightHeading='Back'
-          subHeading='YouTube Task Manager'
+          subHeading='GPS Expense Tracker'
           rightHeaderOpacity={rightHeaderOpacity}
           leftHeaderTranslateX={leftHeaderTranslateX}
           rightHeaderTranslateY={rightHeaderTranslateY}

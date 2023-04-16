@@ -12,10 +12,15 @@ const LOCATION_TRACKING = "location-tracking";
 export default function PermissionsButton() {
   const dispatch = useDispatch();
 
+  const handlePermission = async () => {
+    startLocationTracking();
+    config();
+  };
+
   const startLocationTracking = async () => {
     await Location.startLocationUpdatesAsync(LOCATION_TRACKING, {
       accuracy: Location.Accuracy.Highest,
-      timeInterval: 5000,
+      timeInterval: 10000,
       distanceInterval: 0,
     });
     const hasStarted = await Location.hasStartedLocationUpdatesAsync(
@@ -24,24 +29,25 @@ export default function PermissionsButton() {
     console.log("tracking started?", hasStarted);
   };
 
-  useEffect(() => {
-    const config = async () => {
-      let { status } = await Location.requestBackgroundPermissionsAsync();
+  const config = async () => {
+    let { status } = await Location.requestBackgroundPermissionsAsync();
 
-      if (status !== "granted") {
-        console.log("Permission to access location was denied");
-      } else {
-        console.log("Permission to access location granted");
-      }
-    };
+    if (status !== "granted") {
+      console.log("Permission to access location was denied");
+    } else {
+      console.log("Permission to access location granted");
+    }
+  };
 
-    config();
-  }, []);
+  // useEffect((
+  // ) => {
+  //   config();
+  // }, []);
 
   const [time, setTime] = useState(Date.now());
 
   useEffect(() => {
-    const interval = setInterval(() => setTime(Date.now()), 10000);
+    const interval = setInterval(() => setTime(Date.now()), 60000);
     return () => {
       clearInterval(interval);
     };
@@ -57,14 +63,14 @@ export default function PermissionsButton() {
 
         // console.log(obj)
 
-        dispatch( currentPositionAction(obj) )
+        dispatch(currentPositionAction(obj));
       }
     });
   }, [time]);
 
   return (
     <View style={styles.container}>
-      <Button title="Start tracking" onPress={startLocationTracking} />
+      <Button title="Start tracking" onPress={handlePermission} />
     </View>
   );
 }
@@ -88,10 +94,7 @@ TaskManager.defineTask("location-tracking", async ({ data, error }) => {
     let lat = locations[0].coords.latitude;
     let lng = locations[0].coords.longitude;
 
-    await AsyncStorage.setItem(
-      "position",
-      `${lat},${lng}`
-    );
+    await AsyncStorage.setItem("position", `${lat},${lng}`);
 
     console.log(`${new Date(Date.now()).toLocaleString()}: ${lat},${lng}`);
   }

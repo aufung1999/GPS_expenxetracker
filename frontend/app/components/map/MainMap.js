@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { StyleSheet, View, Text } from "react-native";
 import { Dimensions } from "react-native";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import Constants from "expo-constants";
 import PermissionsButton from "./PermissionsButton";
 import { useDispatch, useSelector } from "react-redux";
